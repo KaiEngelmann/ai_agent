@@ -1,6 +1,7 @@
-from functions.get_file_content import get_file_content
+from functions.run_python import run_python_file
 
-print(get_file_content("calculator", "main.py"))
-print(get_file_content("calculator", "pkg/calculator.py"))
-print(get_file_content("calculator", "/bin/cat"))
-print(get_file_content("calculator", "pkg/does_not_exist.py"))
+print(run_python_file("calculator", "main.py")) #(should print the calculator's usage instructions)
+print(run_python_file("calculator", "main.py", ["3 + 5"])) #(should run the calculator... which gives a kinda nasty rendered result)
+print(run_python_file("calculator", "tests.py"))
+print(run_python_file("calculator", "../main.py"))# (this should return an error)
+print(run_python_file("calculator", "nonexistent.py"))# (this should return an error)
