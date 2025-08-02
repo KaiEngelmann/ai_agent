@@ -10,6 +10,7 @@ def write_file(working_directory, file_path, content):
         dir_name = os.path.dirname(absolute_path)
         if not os.path.exists(dir_name):
             os.makedirs(dir_name)
+        print("Writing to:", absolute_path)
         with open(absolute_path, "w") as f:
             f.write(content)
         return (f'Successfully wrote to "{file_path}" ({len(content)} characters written)')

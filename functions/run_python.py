@@ -1,6 +1,7 @@
 import os
 import subprocess
 from google.genai import types
+import sys
 
 def run_python_file(working_directory, file_path, args=None):
     if args is None:
@@ -15,20 +16,16 @@ def run_python_file(working_directory, file_path, args=None):
         file_name = os.path.basename(absolute_path)
         if not file_name.endswith(".py"):
             return (f'Error: "{file_path}" is not a Python file.')
-        command = ['python', absolute_path] + args
+        command = ['python', absolute_path] + args  # look into this later.  The variable is never being used!!!!
         result = subprocess.run(
-        command,
-            cwd=working_directory,
+            [sys.executable, file_path],
             capture_output=True,
             text=True,
-            timeout=30
+            timeout=30,
+            cwd=working_directory
         )
-        if result.returncode != 0:
-            return (f"Process exited with code {result.returncode}")
-        if result.stdout:
-            return (f"STDOUT:\n{result.stdout}\n STDERR:\n{result.stderr}")
-        else:
-            return ("No output produced")
+        output = (result.stdout or "") + (("\n" + result.stderr) if result.stderr else "")
+        return output.strip() if output.strip() else f"Process exited with code {result.returncode}"
         
     except subprocess.TimeoutExpired as e:
         return f"Error: executing Python file: {e}"
